@@ -71,6 +71,17 @@ const destroy = async function (req, res) {
   }
 }
 
+const destacar = async function (req, res) {
+  try {
+    const product = await Product.findByPk(req.params.productId)
+    product.destacado = !product.destacado
+    const updatedOrder = await product.save()
+    res.json(updatedOrder)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
 const popular = async function (req, res) {
   try {
     const topProducts = await Product.findAll(
@@ -113,6 +124,7 @@ const ProductController = {
   create,
   update,
   destroy,
-  popular
+  popular,
+  destacar
 }
 export default ProductController

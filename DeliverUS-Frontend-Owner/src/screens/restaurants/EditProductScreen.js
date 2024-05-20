@@ -42,7 +42,9 @@ export default function EditProductScreen ({ navigation, route }) {
       .number()
       .positive()
       .integer()
-      .required('Product category is required')
+      .required('Product category is required'),
+    destacado: yup
+      .boolean()
   })
 
   useEffect(() => {
@@ -169,6 +171,17 @@ export default function EditProductScreen ({ navigation, route }) {
                 style={styles.switch}
                 onValueChange={value =>
                   setFieldValue('availability', value)
+                }
+              />
+              <TextRegular>¿Quieres destacar el producto?</TextRegular>
+              <Switch
+                trackColor={{ false: GlobalStyles.brandSecondary, true: GlobalStyles.brandPrimary }}
+                thumbColor={values.destacado ? GlobalStyles.brandSecondary : '#f4f3f4'}
+                // onValueChange={toggleSwitch}
+                value={values.destacado}
+                style={styles.switch}
+                onValueChange={value =>
+                  setFieldValue('destacado', value)
                 }
               />
               <ErrorMessage name={'availability'} render={msg => <TextError>{msg}</TextError> }/>

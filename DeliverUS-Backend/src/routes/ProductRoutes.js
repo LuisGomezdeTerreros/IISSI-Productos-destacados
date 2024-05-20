@@ -16,6 +16,7 @@ const loadFileRoutes = (app) => {
       ProductValidation.create,
       handleValidation,
       ProductMiddleware.checkProductRestaurantOwnership,
+      ProductMiddleware.checkOnly5DestacadosPost,
       ProductController.create
     )
   app.route('/products/popular')
@@ -32,6 +33,7 @@ const loadFileRoutes = (app) => {
       handleFilesUpload(['image'], process.env.PRODUCTS_FOLDER),
       checkEntityExists(Product, 'productId'),
       ProductMiddleware.checkProductOwnership,
+      ProductMiddleware.checkOnly5DestacadosUpdate,
       ProductValidation.update,
       handleValidation,
       ProductController.update
@@ -43,6 +45,15 @@ const loadFileRoutes = (app) => {
       ProductMiddleware.checkProductOwnership,
       ProductMiddleware.checkProductHasNotBeenOrdered,
       ProductController.destroy
+    )
+    app.route('/products/:productId/destacado')
+   
+    .patch(
+      isLoggedIn,
+      hasRole('owner'),
+      checkEntityExists(Product, 'productId'),
+      ProductMiddleware.checkProductOwnership,
+      ProductController.destacar
     )
 }
 export default loadFileRoutes

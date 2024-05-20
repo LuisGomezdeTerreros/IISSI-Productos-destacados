@@ -24,6 +24,42 @@ const checkProductRestaurantOwnership = async (req, res, next) => {
   }
 }
 
+const checkOnly5DestacadosPost = async (req, res, next) => {
+  try {
+    if (req.body.destacado === true) {
+      const destacdos = await Product.count({ where: { destacado: true, restaurantId: req.body.restaurantId } })
+      if (destacdos >= 5) {
+        return res.status(403).send('Ya hay 5 productos destacados')
+      } else {
+        return next()
+      }
+    } else {
+      return next()
+    }
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+}
+
+const checkOnly5DestacadosUpdate = async (req, res, next) => {
+  try {
+    if (req.body.destacado === true) {
+      const product = await Product.findByPk(req.params.productId)
+      
+      const destacdos = await Product.count({ where: { destacado: true, restaurantId: product.restaurantId } })
+      if (destacdos >= 5) {
+        return res.status(403).send('Ya hay 5 productos destacados')
+      } else {
+        return next()
+      }
+    } else {
+      return next()
+    }
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+}
+
 const checkProductHasNotBeenOrdered = async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.productId, { include: { model: Order, as: 'orders' } })
@@ -37,4 +73,4 @@ const checkProductHasNotBeenOrdered = async (req, res, next) => {
   }
 }
 
-export { checkProductOwnership, checkProductRestaurantOwnership, checkProductHasNotBeenOrdered }
+export { checkProductOwnership, checkProductRestaurantOwnership, checkProductHasNotBeenOrdered, checkOnly5DestacadosPost, checkOnly5DestacadosUpdate }

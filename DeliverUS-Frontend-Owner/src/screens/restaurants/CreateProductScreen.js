@@ -35,6 +35,8 @@ export default function CreateProductScreen ({ navigation, route }) {
       .integer('Please provide an integer order value'),
     availability: yup
       .boolean(),
+    destacado: yup
+      .boolean(),
     productCategoryId: yup
       .number()
       .positive()
@@ -145,6 +147,17 @@ export default function CreateProductScreen ({ navigation, route }) {
                 style={styles.switch}
                 onValueChange={value =>
                   setFieldValue('availability', value)
+                }
+              />
+              <TextRegular>¿Quieres destacar el producto?</TextRegular>
+              <Switch
+                trackColor={{ false: GlobalStyles.brandSecondary, true: GlobalStyles.brandPrimary }}
+                thumbColor={values.destacado ? GlobalStyles.brandSecondary : '#f4f3f4'}
+                // onValueChange={toggleSwitch}
+                value={values.destacado}
+                style={styles.switch}
+                onValueChange={value =>
+                  setFieldValue('destacado', value)
                 }
               />
               <ErrorMessage name={'availability'} render={msg => <TextError>{msg}</TextError> }/>
